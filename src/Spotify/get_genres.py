@@ -5,14 +5,14 @@ import math as mt
 from functools import reduce
 
 
-def get_genres(token, sel_tracks):
+def get_genres(self):
     artists_uri = "https://api.spotify.com/v1/artists"
 
     genres = list()
     artist_list = list()
     seed_genres = list()
 
-    for artist_id in sel_tracks['artistIds']:
+    for artist_id in self.sel_tracks['artistIds']:
         split_data = artist_id.split(",")
 
         for _ in split_data:
@@ -20,12 +20,12 @@ def get_genres(token, sel_tracks):
                 artist_list.append(_)
 
     headers = {
-        "authorization": "Bearer {}".format(token)
+        "authorization": "Bearer {}".format(self.token)
     }
 
     cnt = mt.floor((len(artist_list) - 1) / 50) + 1
     if cnt == 0:
-        print(sel_tracks)
+        print(self.sel_tracks)
 
     one_genres = list()
     for _cnt in range(0, cnt):
@@ -110,4 +110,4 @@ def get_genres(token, sel_tracks):
     rtn_genres = pd.DataFrame(artist_list, columns=['artistIds'])
     rtn_genres['genres'] = seed_genres
 
-    return rtn_genres
+    self.genres = rtn_genres

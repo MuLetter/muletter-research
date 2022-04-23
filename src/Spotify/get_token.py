@@ -3,7 +3,7 @@ import requests as req
 import base64
 
 
-def get_token():
+def get_token(self):
     # Step 1. Setting AuthOption
     json_file = open("auth.json")
     auth = json.load(json_file)
@@ -25,5 +25,6 @@ def get_token():
 
     # Step 3. Request
     res = req.post(token_url, data=data, headers=headers)
+    token = res.json()['access_token']
 
-    return res.json()
+    self.token = token

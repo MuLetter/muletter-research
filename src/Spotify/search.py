@@ -5,7 +5,7 @@ from IPython.display import clear_output
 import pandas as pd
 
 
-def search(token):
+def search(self):
     sel_tracks = pd.DataFrame(
         columns=['trackId', 'trackName', 'artistIds', 'artistNames', "image"])
 
@@ -24,7 +24,7 @@ def search(token):
                 "offset": offset
             })
             headers = {
-                "Authorization": "Bearer {}".format(token)
+                "Authorization": "Bearer {}".format(self.token)
             }
             res = req.get("{}?{}".format(search_url, query), headers=headers)
             result = res.json()['tracks']
@@ -91,4 +91,4 @@ def search(token):
         else:
             clear_output(wait=True)
 
-    sel_tracks
+    self.sel_tracks = sel_tracks

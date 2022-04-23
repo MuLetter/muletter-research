@@ -5,10 +5,10 @@ from urllib.parse import urlencode
 from functools import reduce
 
 
-def get_recommend(sel_tracks, features, genres, token, og=None):
+def get_recommend(self, og=None):
     _sel_tracks = pd.DataFrame()
 
-    for idx, row in sel_tracks.iterrows():
+    for idx, row in self.sel_tracks.iterrows():
         artist_ids = row['artistIds'].split(",")
         artist_names = row['artistNames'].split(",")
         if len(artist_ids) > 1:
@@ -25,11 +25,11 @@ def get_recommend(sel_tracks, features, genres, token, og=None):
 
     try:
         seed_info = pd.merge(
-            left=_sel_tracks, right=features, how='inner', on='trackId')
-        seed_info = pd.merge(left=seed_info, right=genres,
+            left=_sel_tracks, right=self.features, how='inner', on='trackId')
+        seed_info = pd.merge(left=seed_info, right=self.genres,
                              how='inner', on='artistIds')
     except:
-        return sel_tracks, features
+        return self.sel_tracks, self.features
 
     seed_info.rename({
         "trackId": "seed_tracks",
@@ -51,7 +51,7 @@ def get_recommend(sel_tracks, features, genres, token, og=None):
 
         query = urlencode(query)
         headers = {
-            "authorization": "Bearer {}".format(token)
+            "authorization": "Bearer {}".format(self.token)
         }
         try:
             res = req.get("{}?{}".format(reco_url, query), headers=headers)
@@ -93,7 +93,7 @@ def get_recommend(sel_tracks, features, genres, token, og=None):
 
     # 중복제거
     except_overlap_cols = [
-        _ not in sel_tracks['trackId'].values for _ in reco_tracks['trackId']]
+        _ not in self.sel_tracks['trackId'].values for _ in reco_tracks['trackId']]
     reco_tracks = reco_tracks[except_overlap_cols]
     reco_tracks.drop_duplicates("trackId", inplace=True)
 
@@ -101,4 +101,4 @@ def get_recommend(sel_tracks, features, genres, token, og=None):
         reco_tracks = reco_tracks[[
             _ not in og['trackId'].values for _ in reco_tracks['trackId']]]
 
-    return reco_tracks
+    self.reco_tracks = reco_tracks
