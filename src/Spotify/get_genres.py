@@ -107,7 +107,7 @@ def get_genres(token, sel_tracks):
                    ",{}".format(cur), _seed_genres, "")[1:]
         )
 
-    rtn_genres = pd.DataFrame(artist_list, columns=['artistId'])
+    rtn_genres = pd.DataFrame(artist_list, columns=['artistIds'])
     rtn_genres['genres'] = seed_genres
 
     return rtn_genres
