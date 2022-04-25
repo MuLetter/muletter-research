@@ -6,8 +6,9 @@ from .get_recommend import get_recommend
 
 
 class Spotify:
-    def __init__(self):
+    def __init__(self, sel_tracks=None):
         self.get_token()
+        self.sel_tracks = sel_tracks
 
 
 Spotify.get_token = get_token

@@ -1,5 +1,5 @@
 from .Spotify.Spotify import Spotify
-from .KMeans.KMeans import KMeans
+from .Recommender.Recommender import Recommender
 
 __version__ = "1.0.0"
-__all__ = ["Spotify", "KMeans"]
+__all__ = ["Spotify", "Recommender"]
