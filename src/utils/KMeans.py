@@ -34,8 +34,7 @@ def ecv(self):
 
 
 class KMeans:
-    def __init__(self, datas, cols, K=None):
-        self.cols = cols
+    def __init__(self, datas, K=None):
         self.datas = datas
 
         if K is None:
@@ -93,14 +92,17 @@ class KMeans:
 
         plt.figure(figsize=(16, 4))
 
-        plt.plot(self.cols, self.datas.T, color='g',
+        plt.plot(self.datas.T, color='g',
                  linewidth=0.05, label="데이터")
-        plt.plot(self.cols, self.clusters_.T,
+        plt.plot(self.clusters_.T,
                  color='g', linewidth=0.5, label="클러스터")
 
         plt.show()
 
     def cluster_plot(self, color_labels=[]):
+        matplotlib.rc('font', family='AppleGothic')
+        plt.rcParams['axes.unicode_minus'] = False
+
         COL_SIZE = 4
 
         datas = self.datas

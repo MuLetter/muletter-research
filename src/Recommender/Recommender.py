@@ -1,7 +1,13 @@
 import pandas as pd
+import numpy as np
 
 from ..utils import DB
 from .. import Spotify
+from ..utils.KMeans import KMeans
+from .init_setting import init_setting
+from .data_preprocessing import data_preprocessing
+from .music_filtering import music_filtering
+from sklearn.metrics.pairwise import euclidean_distances as euc
 
 
 class Recommender:
@@ -9,35 +15,55 @@ class Recommender:
         self.db = DB()
         self.mail_box_id = mail_box_id
 
-    def init_setting(self):
-        mail_box = self.db.get_mailbox(self.mail_box_id)
+    def reco_musics(self):
+        MAX_COUNT = 100
+        MIN_COUNT = 50
 
-        cols = ['trackId', 'trackName', 'artistIds', 'artistNames', 'image']
+        reco_mem = np.array([])
+        _reco_tracks = self.reco_tracks.copy()
+        _reco_features = self.reco_features.copy()
 
-        _sel_tracks = mail_box['tracks']
-        sel_tracks = pd.DataFrame(_sel_tracks)[cols]
+        while True:
+            print("Start!")
+            self.kmeans = KMeans(self.norm_features)
+            self.kmeans.fit()
 
-        sp = Spotify(sel_tracks)
-        sp.get_genres()
-        sp.get_features()
-        sp.get_recommend()
+            recos = music_filtering(self)
 
-        reco_sp = Spotify(sp.reco_tracks)
-        reco_sp.get_features()
+            if (len(recos) + reco_mem.size) > MAX_COUNT:
+                while True:
+                    clusters_ = self.kmeans.clusters_
+                    cnt_df = recos.groupby("label").count()
 
-        self.my_tracks = sp.sel_tracks
-        self.my_features = sp.features
+                    max_label = cnt_df['trackId'].idxmax()
+                    chk_idxes = recos[recos['label'] == max_label].index
 
-        self.reco_tracks = reco_sp.sel_tracks
-        self.reco_features = reco_sp.features
+                    chk_cluster = np.expand_dims(clusters_[max_label], axis=0)
+                    chk_features = self.norm_features[chk_idxes]
 
-        self.features = pd.concat([self.my_features, self.reco_features])
+                    max_idx = euc(chk_cluster, chk_features).argmax()
+                    recos.drop(chk_idxes[max_idx], inplace=True)
 
-    def data_preprocessing(self):
-        features = pd.concat([self.my_features, self.reco_features])
+                    if len(recos) <= MAX_COUNT:
+                        reco_mem = np.append(reco_mem, recos['trackId'].values)
+                        break
+                break
+            elif (len(recos) + reco_mem.size) < MIN_COUNT:
+                reco_mem = np.append(reco_mem, recos['trackId'].values)
 
-        norm_features = features.values[:, 1:]
-        norm_features = (norm_features - norm_features.min(axis=0)) / \
-                        (norm_features.max(axis=0) - norm_features.min(axis=0))
+                self.reco_tracks = self.reco_tracks[~np.isin(
+                    self.reco_tracks['trackId'], reco_mem)]
+                self.reco_features = self.reco_features[~np.isin(
+                    self.reco_features['trackId'], reco_mem)]
 
-        self.norm_features = norm_features
+                self.data_preprocessing()
+            else:
+                reco_mem = np.append(reco_mem, recos['trackId'].values)
+                break
+
+        return _reco_tracks[np.isin(_reco_tracks['trackId'], reco_mem)].copy()
+
+
+Recommender.init_setting = init_setting
+Recommender.data_preprocessing = data_preprocessing
+Recommender.music_filtering = music_filtering
