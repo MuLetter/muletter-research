@@ -1,12 +1,15 @@
 import pandas as pd
 import numpy as np
-
+import datetime as dt
+import matplotlib
+import matplotlib.pyplot as plt
 from ..utils import DB
 from .. import Spotify
 from ..utils.KMeans import KMeans
 from .init_setting import init_setting
 from .data_preprocessing import data_preprocessing
 from .music_filtering import music_filtering
+from .visual_filtering import visual_filtering
 from sklearn.metrics.pairwise import euclidean_distances as euc
 
 
@@ -14,8 +17,11 @@ class Recommender:
     def __init__(self, mail_box_id):
         self.db = DB()
         self.mail_box_id = mail_box_id
+        self.is_run = False
 
-    def reco_musics(self):
+    def run(self):
+        self.is_run = True
+
         MAX_COUNT = 100
         MIN_COUNT = 50
 
@@ -52,16 +58,16 @@ class Recommender:
                 reco_mem = np.append(reco_mem, recos['trackId'].values)
 
                 self.reco_tracks = self.reco_tracks[~np.isin(
-                    self.reco_tracks['trackId'], reco_mem)]
+                    _reco_tracks['trackId'], reco_mem)]
                 self.reco_features = self.reco_features[~np.isin(
-                    self.reco_features['trackId'], reco_mem)]
+                    _reco_features['trackId'], reco_mem)]
 
                 self.data_preprocessing()
             else:
                 reco_mem = np.append(reco_mem, recos['trackId'].values)
                 break
 
-        self.reco_musics_df = _reco_tracks[np.isin(
+        self.reco_musics = _reco_tracks[np.isin(
             _reco_tracks['trackId'], reco_mem)].sample(frac=1).copy()
 
         print("[Recommender] Reco Musics Setting Okay :)")
@@ -70,3 +76,4 @@ class Recommender:
 Recommender.init_setting = init_setting
 Recommender.data_preprocessing = data_preprocessing
 Recommender.music_filtering = music_filtering
+Recommender.visual_filtering = visual_filtering
