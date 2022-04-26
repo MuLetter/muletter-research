@@ -31,8 +31,7 @@ def get_features(self):
 
         res = req.get("{}?{}".format(features_uri, query), headers=headers)
         result = res.json()
-
         features = pd.concat([features, pd.DataFrame(
-            result['audio_features'])[target_cols]], ignore_index=True)
+            list(filter(lambda x: x is not None, result['audio_features'])))[target_cols]], ignore_index=True)
 
     self.features = features.rename({"id": "trackId"}, axis=1)

@@ -61,7 +61,10 @@ class Recommender:
                 reco_mem = np.append(reco_mem, recos['trackId'].values)
                 break
 
-        return _reco_tracks[np.isin(_reco_tracks['trackId'], reco_mem)].copy()
+        self.reco_musics_df = _reco_tracks[np.isin(
+            _reco_tracks['trackId'], reco_mem)].sample(frac=1).copy()
+
+        print("[Recommender] Reco Musics Setting Okay :)")
 
 
 Recommender.init_setting = init_setting
