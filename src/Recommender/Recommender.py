@@ -72,6 +72,12 @@ class Recommender:
 
         print("[Recommender] Reco Musics Setting Okay :)")
 
+    def save(self):
+        self.visual_filtering()
+        self.mail_id = str(self.db.save_mail(self).inserted_id)
+
+        print("[Recommender] Reco Musics Save {}:)".format(self.mail_id))
+
 
 Recommender.init_setting = init_setting
 Recommender.data_preprocessing = data_preprocessing

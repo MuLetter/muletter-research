@@ -38,7 +38,7 @@ class DB:
             "mailBoxId": ObjectId(reco.mail_box_id),
             "tracks": [row.to_dict() for idx, row in reco.reco_musics.iterrows()],
             "visualImage": reco.visual_image,
-            "ecv": reco.kmeans.ecv,
+            "ecv": (reco.kmeans.ecv * 100),
             "createdAt": dt.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
         }
 
