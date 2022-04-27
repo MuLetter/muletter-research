@@ -5,6 +5,7 @@ from sklearn.metrics.pairwise import euclidean_distances as euc
 
 import matplotlib
 import matplotlib.pyplot as plt
+from .sorting import sorting
 
 
 @property
@@ -140,3 +141,4 @@ class KMeans:
 KMeans.tss = tss
 KMeans.wss = wss
 KMeans.ecv = ecv
+KMeans.sorting = sorting
