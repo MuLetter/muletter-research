@@ -5,6 +5,7 @@ import datetime as dt
 from ..utils.KMeans import KMeans
 from ..CoordGenerator import CoordGenerator
 
+from sklearn.metrics.pairwise import euclidean_distances as euc
 from pymongo import MongoClient as mc
 
 
@@ -74,3 +75,28 @@ class SeedZoneController:
 
         self.coord_gen.all_remake_coords()
         print("Save Okay :)")
+
+    def set_label(self, features):
+        row = features.copy()
+
+        cluster_info = self.cluster_zone.find().sort("version", -1)[0]
+        norm_info = cluster_info['norm']
+        k_features = cluster_info['features']
+        cols = row.index.values[1:]
+
+        for col in cols:
+            row[col] = (row[col] - norm_info[col][0]) / \
+                (norm_info[col][1] - norm_info[col][0])
+
+        feature = np.expand_dims(row.values[1:], axis=0)
+        euc_chk = euc(feature, k_features)
+
+        label = int(euc_chk.argmin())
+
+        self.seed_zone.update_one({
+            "trackId": row["trackId"]
+        }, {
+            "$set": {
+                "label": label
+            }
+        })
