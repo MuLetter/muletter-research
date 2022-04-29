@@ -96,3 +96,5 @@ def sorting(self):
 
     self.clusters_ = k_pat[sorting_labels.astype("int")]
     self.labels_ = _label
+
+    print("sorting okay :)")
