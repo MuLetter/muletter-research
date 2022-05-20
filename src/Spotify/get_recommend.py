@@ -5,7 +5,7 @@ from urllib.parse import urlencode
 from functools import reduce
 
 
-def get_recommend(self, og=None):
+def get_recommend(self, og=None, get_bak=False):
     _sel_tracks = pd.DataFrame()
 
     for idx, row in self.sel_tracks.iterrows():
@@ -46,6 +46,7 @@ def get_recommend(self, og=None):
     _reco_tracks = np.array([])
     for idx in range(len(seed_info)):
         query = seed_info.iloc[idx].to_dict()
+        seed_id = query['seed_tracks']
         query['market'] = 'KR'
         query['limit'] = 100
 
@@ -82,14 +83,15 @@ def get_recommend(self, og=None):
                     ""
                 )
                 _reco_tracks = np.append(_reco_tracks,
-                                         [_id, _name, artists_id, artists, _image]
+                                         [_id, _name, artists_id, artists,
+                                             _image, seed_id]
                                          )
         except:
             return res
 
-    _reco_tracks = _reco_tracks.reshape(-1, 5)
+    _reco_tracks = _reco_tracks.reshape(-1, 6)
     reco_tracks = pd.DataFrame(_reco_tracks, columns=[
-                               'trackId', 'trackName', 'artistIds', 'artistName', 'image'])
+                               'trackId', 'trackName', 'artistIds', 'artistName', 'image', 'seedId'])
 
     # 중복제거
     except_overlap_cols = [

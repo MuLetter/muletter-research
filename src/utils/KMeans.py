@@ -114,26 +114,23 @@ class KMeans:
         r = mt.floor((K - 1) / COL_SIZE) + 1
         plt.figure(figsize=(20, COL_SIZE*r))
 
-        for ax_idx in range(r * COL_SIZE):
+        for ax_idx in range(self.K):
             ax = plt.subplot(r, COL_SIZE, ax_idx + 1)
+            _cluster = clusters[ax_idx]
+            _datas = datas[labels == ax_idx]
 
-            if ax_idx >= K:
-                ax.set_visible(False)
+            if ax_idx in color_labels:
+                ax.plot(_datas.T, c='b', linewidth=0.4)
             else:
-                _cluster = clusters[ax_idx]
-                _datas = datas[labels == ax_idx]
+                ax.plot(_datas.T, c='g', linewidth=0.25)
 
-                if ax_idx in color_labels:
-                    ax.plot(_datas.T, c='b', linewidth=0.4)
-                else:
-                    ax.plot(_datas.T, c='g', linewidth=0.4)
-                ax.plot(_cluster, c='b', linewidth=1)
-                ax.text(0.02, 0.925, "{}번 클러스터".format(ax_idx),
-                        ha="left",
-                        va="center",
-                        transform=ax.transAxes,
-                        fontsize=8,
-                        )
+            ax.plot(_cluster, c='b' if ax_idx in color_labels else 'g', linewidth=1)
+            ax.text(0.02, 0.925, "{}번 클러스터".format(ax_idx),
+                    ha="left",
+                    va="center",
+                    transform=ax.transAxes,
+                    fontsize=8,
+                    )
 
         plt.show()
 
