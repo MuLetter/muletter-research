@@ -79,7 +79,7 @@ def get_genres(self):
                 in_g = genre
                 if in_g in ['edm', 'house', 'electro', 'dance', 'alternative',
                             'soul', 'indie', 'metal', 'grunge', 'reggaeton',
-                            'latino', "singer-songwriter"]:
+                            'latino']:
                     in_g = ""
             elif ("k" in genre) | ("korean" in genre):
                 in_g = "k-pop"

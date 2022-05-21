@@ -28,6 +28,7 @@ def get_recommend(self, og=None, get_bak=False):
             left=_sel_tracks, right=self.features, how='inner', on='trackId')
         seed_info = pd.merge(left=seed_info, right=self.genres,
                              how='inner', on='artistIds')
+
     except:
         return self.sel_tracks, self.features
 
