@@ -35,15 +35,27 @@ def ecv(self):
 
 
 class KMeans:
-    def __init__(self, datas, K=None):
+    def __init__(self, datas, K=None, ver=2):
         self.datas = datas
+        self.ver = ver
 
         if K is None:
             self.K = round(mt.sqrt(len(datas) / 2))
         else:
             self.K = K
 
+    def init_setting_ran(self):
+        datas = self.datas.copy()
+        idxes = np.arange(len(datas))
+        _clusters = datas[np.random.choice(idxes, self.K)]
+
+        self.labels_ = np.zeros(self.K) - 1
+        self.clusters_ = _clusters
+
     def init_setting(self):
+        if self.ver != 2:
+            self.init_setting_ran()
+            return
         datas = self.datas.copy()
 
         _clusters = datas[np.random.randint(len(datas))]
@@ -75,7 +87,6 @@ class KMeans:
         print("ECV {}%".format(round(self.ecv * 100)))
 
     def fit(self, early_stop_cnt=3):
-        self.init_setting()
         _early_stop_cnt = 0
         while True:
             bak_label = self.labels_.copy()
@@ -83,7 +94,6 @@ class KMeans:
 
             if np.array_equiv(bak_label, self.labels_):
                 _early_stop_cnt += 1
-
             if _early_stop_cnt == early_stop_cnt:
                 break
 
