@@ -44,6 +44,8 @@ class KMeans:
         else:
             self.K = K
 
+        # self.init_setting()
+
     def init_setting_ran(self):
         datas = self.datas.copy()
         idxes = np.arange(len(datas))
