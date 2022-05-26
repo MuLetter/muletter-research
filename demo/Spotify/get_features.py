@@ -2,6 +2,7 @@ import pandas as pd
 import requests as req
 from urllib.parse import urlencode
 import math as mt
+from .common import FEATURE_COLS
 
 
 def get_features(self):
@@ -12,8 +13,7 @@ def get_features(self):
     cnt = mt.floor((len(self.sel_tracks) - 1) / 100) + 1
 
     features = pd.DataFrame()
-    target_cols = ['id', 'danceability', 'energy', 'key', 'loudness', 'speechiness',
-                   'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo']
+    target_cols = ['id'] + FEATURE_COLS
 
     for _cnt in range(0, cnt):
         ids = ""

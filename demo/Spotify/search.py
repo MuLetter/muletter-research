@@ -59,8 +59,8 @@ def search(self):
                 _result.append({
                     "trackId": _id,
                     "trackName": _name,
-                    "artistIds": artists_id.split(",")[0],
-                    "artistNames": artists.split(",")[0],
+                    "artistIds": artists_id,
+                    "artistNames": artists,
                     "image": _image
                 })
 

@@ -6,48 +6,11 @@ from functools import reduce
 
 
 def get_recommend(self, og=None, get_bak=False):
-    _sel_tracks = pd.DataFrame()
-
-    for idx, row in self.sel_tracks.iterrows():
-        artist_ids = row['artistIds'].split(",")
-        artist_names = row['artistNames'].split(",")
-        if len(artist_ids) > 1:
-            for _idx, artist_id in enumerate(artist_ids):
-                _row = row.copy()
-                artist_name = artist_names[_idx]
-                _row['artistIds'] = artist_id
-                _row['artistNames'] = artist_name
-                _sel_tracks = _sel_tracks.append(_row,
-                                                 ignore_index=True)
-        else:
-            _sel_tracks = _sel_tracks.append(row,
-                                             ignore_index=True)
-
-    try:
-        seed_info = pd.merge(
-            left=_sel_tracks, right=self.features, how='inner', on='trackId')
-        seed_info = pd.merge(left=seed_info, right=self.genres,
-                             how='inner', on='artistIds')
-
-    except:
-        return self.sel_tracks, self.features
-
-    seed_info.rename({
-        "trackId": "seed_tracks",
-        "artistIds": "seed_artists",
-        "genres": "seed_genres",
-    }, axis=1, inplace=True)
-    feature_cols = ['seed_tracks', 'seed_artists', 'seed_genres',
-                    'acousticness', 'danceability', 'energy',
-                    'instrumentalness', 'key', 'liveness', 'loudness',
-                    'speechiness', 'tempo', 'valence']
-    seed_info = seed_info[feature_cols]
-
     reco_url = "https://api.spotify.com/v1/recommendations"
     _reco_tracks = np.array([])
-    for idx in range(len(seed_info)):
-        query = seed_info.iloc[idx].to_dict()
-        seed_id = query['seed_tracks']
+    for idx, _seed in self.seed.iterrows():
+        query = _seed.to_dict()
+
         query['market'] = 'KR'
         query['limit'] = 100
 
@@ -85,7 +48,7 @@ def get_recommend(self, og=None, get_bak=False):
                 )
                 _reco_tracks = np.append(_reco_tracks,
                                          [_id, _name, artists_id, artists,
-                                             _image, seed_id]
+                                             _image, _seed['seed_tracks']]
                                          )
         except:
             return res
