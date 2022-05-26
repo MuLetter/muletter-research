@@ -2,7 +2,10 @@ import pandas as pd
 
 from .merge import merge
 from .data_preprocessing import data_preprocessing
+from .run import run
 from .draw_dataset import draw_dataset
+from .draw_cluster import draw_cluster
+
 
 from ..Spotify import Spotify
 from ..lib.DB import DB
@@ -35,3 +38,5 @@ class Recommender:
 Recommender.merge = merge
 Recommender.data_preprocessing = data_preprocessing
 Recommender.draw_dataset = draw_dataset
+Recommender.draw_cluster = draw_cluster
+Recommender.run = run

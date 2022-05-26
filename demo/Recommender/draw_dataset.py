@@ -32,7 +32,7 @@ def draw_dataset(self):
         ax.set_title("{} 데이터셋 현황".format(title))
 
         plt.ylabel("Value")
-        plt.xlabel("Features")
+        plt.xlabel("Feature")
 
         plt.legend(loc='upper right')
 
