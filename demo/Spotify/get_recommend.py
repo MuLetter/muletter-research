@@ -61,7 +61,7 @@ def get_recommend(self, og=None, get_bak=False):
     except_overlap_cols = [
         _ not in self.sel_tracks['trackId'].values for _ in reco_tracks['trackId']]
     reco_tracks = reco_tracks[except_overlap_cols]
-    reco_tracks.drop_duplicates("trackId", inplace=True)
+    reco_tracks.drop_duplicates("trackId", inplace=True, ignore_index=True)
 
     if og is not None:
         reco_tracks = reco_tracks[[

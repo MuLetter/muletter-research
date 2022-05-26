@@ -11,6 +11,12 @@ class Spotify:
         self.get_token()
         self.sel_tracks = sel_tracks
 
+    def auto_reco_process(self):
+        self.get_genres()
+        self.get_features()
+        self.set_seed()
+        self.get_recommend()
+
 
 Spotify.get_token = get_token
 Spotify.search = search
