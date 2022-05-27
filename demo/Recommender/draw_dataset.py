@@ -1,6 +1,5 @@
 import matplotlib
 import matplotlib.pyplot as plt
-import numpy as np
 
 
 def draw_dataset(self):
@@ -25,7 +24,8 @@ def draw_dataset(self):
                 color="#EE68A4", linewidth=2, label='사용자 음악 데이터')
         ax.plot(cols, features[:1].T, color="#2880D8",
                 linewidth=0.1, label='추천 음악 데이터')
-        ax.plot(cols, features.T, color="#2880D8", linewidth=0.1)
+        ax.plot(cols, features[~self.user_idx].T,
+                color="#2880D8", linewidth=0.1)
         ax.plot(cols, features[self.user_idx].T, color="#EE68A4", linewidth=2)
         ax.set_title("{} 데이터셋 현황".format(title))
 

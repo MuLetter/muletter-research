@@ -8,6 +8,7 @@ from .draw_cluster import draw_cluster
 from .parse_reco_cluster import parse_reco_cluster
 from .adjust_rate import adjust_rate
 from .draw_rate import draw_rate
+from .draw_filtering import draw_filtering
 
 
 from ..Spotify import Spotify
@@ -15,9 +16,12 @@ from ..lib.DB import DB
 
 
 class Recommender:
-    def __init__(self, mailbox_id):
+    def __init__(self, mailbox_id=None):
         self.db = DB()
-        self.mailbox = self.db.get_mailbox(mailbox_id)
+        if mailbox_id is not None:
+            self.mailbox = self.db.get_mailbox(mailbox_id)
+
+    def init_setting(self):
         tracks = self.mailbox['tracks']
 
         user_tracks = pd.DataFrame(tracks)
@@ -37,6 +41,10 @@ class Recommender:
             "features": reco_sp.features
         }
 
+    def static_setting(self, user, reco):
+        self.user = user
+        self.reco = reco
+
 
 Recommender.merge = merge
 Recommender.data_preprocessing = data_preprocessing
@@ -46,3 +54,4 @@ Recommender.run = run
 Recommender.parse_reco_cluster = parse_reco_cluster
 Recommender.adjust_rate = adjust_rate
 Recommender.draw_rate = draw_rate
+Recommender.draw_filtering = draw_filtering

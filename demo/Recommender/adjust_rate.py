@@ -1,3 +1,6 @@
+from ..Recommender import Recommender
+
+import pandas as pd
 import numpy as np
 from sklearn.metrics import euclidean_distances as euc
 
@@ -28,11 +31,34 @@ def max_adjust_rate(self, _count):
         self.reco_[key].reset_index(drop=True, inplace=True)
 
 
+def min_adjust_rate(self):
+    user = self.user.copy()
+    reco = dict()
+    for key in self.reco.keys():
+        reco[key] = self.reco[key][
+            ~np.isin(self.reco[key]['trackId'], self.reco_[key]['trackId'])
+        ].copy().reset_index(drop=True)
+
+    _recommender = Recommender()
+    _recommender.static_setting(user, reco)
+    _recommender.merge()
+    _recommender.data_preprocessing()
+    _recommender.run()
+
+    for key in self.reco_.keys():
+        self.reco_[key] = pd.concat([
+            self.reco_[key],
+            _recommender.reco_[key]
+        ]).reset_index(drop=True)
+
+
 def adjust_rate(self):
     while True:
         _count = self.reco_['tracks']['seedId'].value_counts()
         if _count.sum() > 100:
             max_adjust_rate(self, _count)
+        elif _count.sum() < 50:
+            min_adjust_rate(self)
         else:
             self.count_ = _count
             break
