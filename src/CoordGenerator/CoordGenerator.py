@@ -76,17 +76,14 @@ class CoordGenerator:
         self.mail = self.conn.mail
         self.mail_box = self.conn.MailBox
         self.cluster_zone = self.conn.ClusterZone
+        self.K = self.cluster_zone.find().sort("version", -1)[0]['K']
 
     def all_remake_coords(self):
-        K = self.cluster_zone.find().sort("version", -1)[0]['K']
-
         mail_boxes = self.mail_box.find()
         for mail_box in mail_boxes:
             self.make_coords(mail_box["_id"])
 
     def make_coords(self, mail_box_id):
-        K = self.cluster_zone.find().sort("version", -1)[0]['K']
-
         mail_box_id = ObjectId(mail_box_id) if type(
             mail_box_id) == str else mail_box_id
         mail_box = self.mail_box.find_one({
@@ -94,7 +91,7 @@ class CoordGenerator:
         })
 
         tracks = mail_box['tracks']
-        label_cnt = np.zeros(K)
+        label_cnt = np.zeros(self.K)
         for track in tracks:
             trackId = track['trackId']
             res = self.seed_zone.find_one({
@@ -105,14 +102,17 @@ class CoordGenerator:
 
         label_per = (label_cnt / label_cnt.sum()
                      * 100).round().astype("int")
+        self.label_percentages_ = label_per
+
         x, y = get_coord(label_per).astype("float64")
+        self.point = {
+            "x": x,
+            "y": y,
+        }
         self.mail_box.update_one({
             "_id": mail_box_id,
         }, {
             "$set": {
-                "point": {
-                    "x": x,
-                    "y": y
-                }
+                "point": self.point
             }
         })

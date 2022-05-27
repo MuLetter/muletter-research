@@ -2,6 +2,7 @@ import math as mt
 import numpy as np
 from ..lib import DB
 from bson import ObjectId
+from .draw_coord import draw_coord
 
 quadrant_check = [[1, 1], [1, -1], [-1, -1], [-1, 1]]
 
@@ -68,35 +69,61 @@ def get_coord(data):
     return point.sum(axis=0)
 
 
+def _make_coords(mailbox):
+    db = DB()
+    K = db.cluster_zone.find().sort("version", -1)[0]['K']
+
+    tracks = mailbox['tracks']
+    label_cnt = np.zeros(K)
+    for track in tracks:
+        trackId = track['trackId']
+        res = db.seed_zone.find_one({
+            "trackId": trackId
+        })
+        label = res['label']
+        label_cnt[label] += 1
+
+    label_per = (label_cnt / label_cnt.sum()
+                 * 100).round().astype("int")
+    x, y = get_coord(label_per).astype("float64")
+
+    label_percentages_ = label_per
+    point = {
+        "x": x,
+        "y": y,
+    }
+
+    db.mailbox.update_one({
+        "_id": mailbox["_id"],
+    }, {
+        "$set": {
+            "point": point
+        }
+    })
+
+    return label_percentages_, point
+
+
 class CoordGenerator:
     def __init__(self, mailbox_id):
         self.db = DB()
         self.mailbox_id = ObjectId(mailbox_id)
-        self.mail_box = self.db.get_mailbox(mailbox_id)
+        self.mailbox = self.db.mailbox.find_one({"_id": ObjectId(mailbox_id)})
+        self.K = self.db.cluster_zone.find().sort("version", -1)[0]['K']
+
+    @staticmethod
+    def all_make_coords():
+        db = DB()
+
+        mailboxes = db.mailbox.find()
+        for mailbox in mailboxes:
+            _make_coords(mailbox)
 
     def make_coords(self):
-        K = self.db.cluster_zone.find().sort("version", -1)[0]['K']
+        label_percentages_, point = _make_coords(self.mailbox)
 
-        tracks = self.mail_box['tracks']
-        label_cnt = np.zeros(K)
-        for track in tracks:
-            trackId = track['trackId']
-            res = self.db.seed_zone.find_one({
-                "trackId": trackId
-            })
-            label = res['label']
-            label_cnt[label] += 1
+        self.label_percentages_ = label_percentages_
+        self.point = point
 
-        label_per = (label_cnt / label_cnt.sum()
-                     * 100).round().astype("int")
-        x, y = get_coord(label_per).astype("float64")
-        self.db.mailbox.update_one({
-            "_id": self.mailbox_id,
-        }, {
-            "$set": {
-                "point": {
-                    "x": x,
-                    "y": y
-                }
-            }
-        })
+
+CoordGenerator.draw_coord = draw_coord
