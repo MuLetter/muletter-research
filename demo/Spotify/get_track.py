@@ -45,8 +45,8 @@ def get_track(self, id):
     )
 
     track = pd.Series({
-        "id": _id,
-        "name": _name,
+        "trackId": _id,
+        "trackName": _name,
         "artistIds": artists_id,
         "artistNames": artists,
         "image": _image

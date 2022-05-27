@@ -71,7 +71,7 @@ def get_coord(data):
 class CoordGenerator:
     def __init__(self, mailbox_id):
         self.db = DB()
-        self.mailbox_id = mailbox_id
+        self.mailbox_id = ObjectId(mailbox_id)
         self.mail_box = self.db.get_mailbox(mailbox_id)
 
     def make_coords(self):
@@ -81,7 +81,7 @@ class CoordGenerator:
         label_cnt = np.zeros(K)
         for track in tracks:
             trackId = track['trackId']
-            res = self.seed_zone.find_one({
+            res = self.db.seed_zone.find_one({
                 "trackId": trackId
             })
             label = res['label']

@@ -1,5 +1,6 @@
 import pandas as pd
 from ..lib import DB, KMeans
+from ..common import FEATURE_COLS
 
 
 class SeedZoneObserver:
@@ -16,7 +17,8 @@ class SeedZoneObserver:
         seeds = self.db.seed_zone.find({}, {"_id": 0})
 
         # Data Preprocessing
-        features = pd.DataFrame([_ for _ in seeds]).to_numpy()
+        features = pd.DataFrame([_ for _ in seeds])[
+            ['trackId'] + FEATURE_COLS].to_numpy()
         norm_features = (features[:, 1:] - features[:, 1:].min(axis=0)) / \
             (features[:, 1:].max(axis=0) - features[:, 1:].min(axis=0))
 
