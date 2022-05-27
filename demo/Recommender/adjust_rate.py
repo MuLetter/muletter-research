@@ -1,4 +1,4 @@
-from ..Recommender import Recommender
+# from ..Recommender import Recommender
 
 import pandas as pd
 import numpy as np
@@ -39,7 +39,7 @@ def min_adjust_rate(self):
             ~np.isin(self.reco[key]['trackId'], self.reco_[key]['trackId'])
         ].copy().reset_index(drop=True)
 
-    _recommender = Recommender()
+    _recommender = self.generate()
     _recommender.static_setting(user, reco)
     _recommender.merge()
     _recommender.data_preprocessing()

@@ -18,8 +18,12 @@ from ..lib.DB import DB
 class Recommender:
     def __init__(self, mailbox_id=None):
         self.db = DB()
+        self.mailbox_id = mailbox_id
         if mailbox_id is not None:
             self.mailbox = self.db.get_mailbox(mailbox_id)
+
+    def generate(self):
+        return Recommender()
 
     def init_setting(self):
         tracks = self.mailbox['tracks']
@@ -27,6 +31,7 @@ class Recommender:
         user_tracks = pd.DataFrame(tracks)
         sp = Spotify(user_tracks)
         sp.auto_reco_process()
+        self.db.save_seedzone(sp.features)
 
         reco_tracks = sp.reco_tracks
         reco_sp = Spotify(reco_tracks)

@@ -33,12 +33,11 @@ class DB:
 
         return mail_box
 
-    def save_mail(self, reco):
+    def save_mail(self, recommender):
         mail = {
-            "mailBoxId": ObjectId(reco.mail_box_id),
-            "tracks": [row.to_dict() for idx, row in reco.reco_musics.iterrows()],
-            "visualImage": reco.visual_image,
-            "ecv": (reco.kmeans.ecv * 100),
+            "mailBoxId": ObjectId(recommender.mailbox_id),
+            "tracks": [row.to_dict() for idx, row in recommender.reco['tracks'].iterrows()],
+            "isRead": False,
             "createdAt": dt.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
         }
 
