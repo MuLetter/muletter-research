@@ -3,16 +3,17 @@ from ..lib import DB, KMeans
 
 
 class SeedZoneObserver:
+    def __init__(self):
+        self.db = DB()
+
     @staticmethod
     def observe():
         db = DB()
         return db.seed_zone.estimated_document_count()
 
     def run(self, drawing=False):
-        db = DB()
-
         # Data Ready
-        seeds = db.seed_zone.find({}, {"_id": 0})
+        seeds = self.db.seed_zone.find({}, {"_id": 0})
 
         # Data Preprocessing
         features = pd.DataFrame([_ for _ in seeds]).to_numpy()
@@ -27,3 +28,5 @@ class SeedZoneObserver:
 
         self.features = features
         self.kmeans = kmeans
+
+        self.db.save_clusterzone(self)
