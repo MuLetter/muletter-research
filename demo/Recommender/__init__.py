@@ -5,6 +5,7 @@ from .data_preprocessing import data_preprocessing
 from .run import run
 from .draw_dataset import draw_dataset
 from .draw_cluster import draw_cluster
+from .parse_reco_cluster import parse_reco_cluster
 
 
 from ..Spotify import Spotify
@@ -40,3 +41,4 @@ Recommender.data_preprocessing = data_preprocessing
 Recommender.draw_dataset = draw_dataset
 Recommender.draw_cluster = draw_cluster
 Recommender.run = run
+Recommender.parse_reco_cluster = parse_reco_cluster

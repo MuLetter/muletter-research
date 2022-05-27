@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 
 def merge(self):
@@ -10,4 +11,6 @@ def merge(self):
 
         merge[key] = pd.concat([user, reco], ignore_index=True)
 
+    self.user_idx = np.isin(
+        merge['tracks']['trackId'], self.user['tracks']['trackId'])
     self.merged = merge

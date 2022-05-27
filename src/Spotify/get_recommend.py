@@ -92,7 +92,7 @@ def get_recommend(self, og=None, get_bak=False):
 
     _reco_tracks = _reco_tracks.reshape(-1, 6)
     reco_tracks = pd.DataFrame(_reco_tracks, columns=[
-                               'trackId', 'trackName', 'artistIds', 'artistName', 'image', 'seedId'])
+                               'trackId', 'trackName', 'artistIds', 'artistNames', 'image', 'seedId'])
 
     # 중복제거
     except_overlap_cols = [
