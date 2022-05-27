@@ -35,14 +35,14 @@ def draw_coord(self):
     ax = plt.subplot(1, 2, 2)
     data = self.point
 
-    plt.axvline(0, color="#333", linewidth=1)
-    plt.axhline(0, color="#333", linewidth=1)
+    ax.axvline(0, color="#333", linewidth=1)
+    ax.axhline(0, color="#333", linewidth=1)
 
     plt.scatter(data['x'], data['y'], color='#AC73CF', s=300, marker='v')
 
     plt.ylim(-100, 100)
     plt.xlim(-100, 100)
-    plt.title("Quadrant : After Coords", pad=50)
+    ax.set_title("Quadrant : After Coords", pad=50)
     ax.spines['right'].set_visible(False)
     ax.spines['left'].set_visible(False)
     ax.spines['top'].set_visible(False)

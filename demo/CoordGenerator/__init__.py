@@ -119,6 +119,17 @@ class CoordGenerator:
         for mailbox in mailboxes:
             _make_coords(mailbox)
 
+    @staticmethod
+    def all_make_coords_2():
+        db = DB()
+
+        mailboxes = db.mailbox.find()
+        result = list()
+        for mailbox in mailboxes:
+            result.append(_make_coords(mailbox))
+
+        return result
+
     def make_coords(self):
         label_percentages_, point = _make_coords(self.mailbox)
 
