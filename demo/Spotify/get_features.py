@@ -2,7 +2,7 @@ import pandas as pd
 import requests as req
 from urllib.parse import urlencode
 import math as mt
-from .common import FEATURE_COLS
+from ..common import FEATURE_COLS
 
 
 def get_features(self):

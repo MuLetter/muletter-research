@@ -4,6 +4,7 @@ from .get_features import get_features
 from .get_genres import get_genres
 from .get_recommend import get_recommend
 from .set_seed import set_seed
+from .get_track import get_track
 
 
 class Spotify:
@@ -24,3 +25,4 @@ Spotify.get_features = get_features
 Spotify.get_genres = get_genres
 Spotify.get_recommend = get_recommend
 Spotify.set_seed = set_seed
+Spotify.get_track = get_track

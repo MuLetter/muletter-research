@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from functools import reduce
-from .common import FEATURE_COLS
+from ..common import FEATURE_COLS
 
 
 def set_seed(self):

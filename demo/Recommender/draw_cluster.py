@@ -13,7 +13,7 @@ def draw_cluster(self):
     cols = self.user['features'].columns.values[1:]
 
     r, c = mt.ceil(kmeans.K / 4), 4
-    plt.figure(figsize=(38, 8 * mt.ceil(self.kmeans.K / 4)))
+    plt.figure(figsize=(38, 8 * mt.ceil(kmeans.K / 4)))
 
     for label in np.unique(kmeans.labels_):
         if hasattr(self, "parsed_labels_"):
