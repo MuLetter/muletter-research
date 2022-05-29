@@ -1,4 +1,6 @@
 import pandas as pd
+import math as mt
+
 from ..lib import DB, KMeans
 from ..common import FEATURE_COLS
 
@@ -10,7 +12,13 @@ class SeedZoneObserver:
     @staticmethod
     def observe():
         db = DB()
-        return db.seed_zone.estimated_document_count()
+
+        seed_zone_count = db.seed_zone.estimated_document_count()
+        check_K = round(mt.sqrt(seed_zone_count / 2))
+
+        K = db.cluster_zone.find({}).sort("createdAt", -1)[0]["K"]
+
+        return check_K, K
 
     def run(self, drawing=False):
         # Data Ready

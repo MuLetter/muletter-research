@@ -3,6 +3,10 @@ import numpy as np
 from ..lib import DB
 from bson import ObjectId
 from .draw_coord import draw_coord, save_draw_radar, save_draw_quadrant
+from .draw_map import draw_map
+from .get_map_table import get_map_table
+from .draw_radar_map import draw_radar_map
+from .radar_test import radar_test
 
 quadrant_check = [[1, 1], [1, -1], [-1, -1], [-1, 1]]
 
@@ -97,7 +101,8 @@ def _make_coords(mailbox):
         "_id": mailbox["_id"],
     }, {
         "$set": {
-            "point": point
+            "point": point,
+            "_labelPercentages": label_percentages_.tolist()
         }
     })
 
@@ -140,3 +145,7 @@ class CoordGenerator:
 CoordGenerator.draw_coord = draw_coord
 CoordGenerator.save_draw_radar = save_draw_radar
 CoordGenerator.save_draw_quadrant = save_draw_quadrant
+CoordGenerator.draw_map = draw_map
+CoordGenerator.get_map_table = get_map_table
+CoordGenerator.draw_radar_map = draw_radar_map
+CoordGenerator.radar_test = radar_test
