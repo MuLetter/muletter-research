@@ -2,7 +2,7 @@ import math as mt
 import numpy as np
 from ..lib import DB
 from bson import ObjectId
-from .draw_coord import draw_coord
+from .draw_coord import draw_coord, save_draw_radar, save_draw_quadrant
 
 quadrant_check = [[1, 1], [1, -1], [-1, -1], [-1, 1]]
 
@@ -138,3 +138,5 @@ class CoordGenerator:
 
 
 CoordGenerator.draw_coord = draw_coord
+CoordGenerator.save_draw_radar = save_draw_radar
+CoordGenerator.save_draw_quadrant = save_draw_quadrant
