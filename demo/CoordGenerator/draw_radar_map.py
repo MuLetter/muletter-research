@@ -56,6 +56,9 @@ def draw_radar_map():
                                           ran_mailboxes[mailbox_cnt]['_labelPercentages'][0]), color="#AC73CF")
                 mailbox_cnt += 1
 
+            ax.set_ylim(-100, 100)
+            ax.set_xlim(-100, 100)
+
     gs = fig.add_gridspec(3, 6)
     ax = fig.add_subplot(gs[:, 3:6])
 

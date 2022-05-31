@@ -9,6 +9,18 @@ class SeedZoneObserver:
     def __init__(self):
         self.db = DB()
 
+    def init_setting(self):
+        # Data Ready
+        seeds = self.db.seed_zone.find({}, {"_id": 0})
+
+        # Data Preprocessing
+        self.features_df = pd.DataFrame([_ for _ in seeds])[
+            ['trackId'] + FEATURE_COLS]
+        self.features = self.features_df.to_numpy()
+        self.norm_features = (self.features[:, 1:] - self.features[:, 1:].min(axis=0)) / \
+            (self.features[:, 1:].max(axis=0) -
+             self.features[:, 1:].min(axis=0))
+
     @staticmethod
     def observe():
         db = DB()
@@ -21,22 +33,16 @@ class SeedZoneObserver:
         return check_K, K
 
     def run(self, drawing=False):
-        # Data Ready
-        seeds = self.db.seed_zone.find({}, {"_id": 0})
-
-        # Data Preprocessing
-        features = pd.DataFrame([_ for _ in seeds])[
-            ['trackId'] + FEATURE_COLS].to_numpy()
-        norm_features = (features[:, 1:] - features[:, 1:].min(axis=0)) / \
-            (features[:, 1:].max(axis=0) - features[:, 1:].min(axis=0))
 
         # KMeans Run
-        kmeans = KMeans(norm_features)
+        kmeans = KMeans(self.norm_features)
         kmeans.init_setting()
         kmeans.fit()
-        kmeans.sorting()
 
-        self.features = features
         self.kmeans = kmeans
 
-        self.db.save_clusterzone(self)
+    def sorting(self):
+        self.kmeans.sorting()
+
+    def save(self):
+        self.cluster_zone = self.db.save_clusterzone(self)

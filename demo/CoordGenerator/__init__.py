@@ -74,37 +74,40 @@ def get_coord(data):
 
 
 def _make_coords(mailbox):
-    db = DB()
-    K = db.cluster_zone.find().sort("version", -1)[0]['K']
+    try:
+        db = DB()
+        K = db.cluster_zone.find().sort("version", -1)[0]['K']
 
-    tracks = mailbox['tracks']
-    label_cnt = np.zeros(K)
-    for track in tracks:
-        trackId = track['trackId']
-        res = db.seed_zone.find_one({
-            "trackId": trackId
-        })
-        label = res['label']
-        label_cnt[label] += 1
+        tracks = mailbox['tracks']
+        label_cnt = np.zeros(K)
+        for track in tracks:
+            trackId = track['trackId']
+            res = db.seed_zone.find_one({
+                "trackId": trackId
+            })
+            label = res['label']
+            label_cnt[label] += 1
 
-    label_per = (label_cnt / label_cnt.sum()
-                 * 100).round().astype("int")
-    x, y = get_coord(label_per).astype("float64")
+        label_per = (label_cnt / label_cnt.sum()
+                     * 100).round().astype("int")
+        x, y = get_coord(label_per).astype("float64")
 
-    label_percentages_ = label_per
-    point = {
-        "x": x,
-        "y": y,
-    }
-
-    db.mailbox.update_one({
-        "_id": mailbox["_id"],
-    }, {
-        "$set": {
-            "point": point,
-            "_labelPercentages": label_percentages_.tolist()
+        label_percentages_ = label_per
+        point = {
+            "x": x,
+            "y": y,
         }
-    })
+
+        db.mailbox.update_one({
+            "_id": mailbox["_id"],
+        }, {
+            "$set": {
+                "point": point,
+                "_labelPercentages": label_percentages_.tolist()
+            }
+        })
+    except:
+        print(track)
 
     return label_percentages_, point
 

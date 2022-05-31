@@ -22,7 +22,7 @@ class Demo1:
     @staticmethod
     def pt2_2(recommender):
         display(Markdown(
-            "### 우체통 <u>'{}'</u>의 음악들의 <u>Spoitfy 추천 음악은 총{} 개</u> 입니다.".format(
+            "### 우체통 <u>'{}'</u>의 음악들의 <u>Spoitfy 추천 음악은 총 {} 개</u> 입니다.".format(
                 recommender.mailbox_id, recommender.reco['tracks'].index.size)
         ))
 
