@@ -56,9 +56,9 @@ def adjust_rate(self):
     while True:
         _count = self.reco_['tracks']['seedId'].value_counts()
         if _count.sum() > 100:
-            max_adjust_rate(self, _count)
+            self.max_adjust_rate(_count)
         elif _count.sum() < 50:
-            min_adjust_rate(self)
+            self.min_adjust_rate()
         else:
             self.count_ = _count
             break

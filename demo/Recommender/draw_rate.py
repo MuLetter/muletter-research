@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 
 def draw_rate(self):
     _count = self.reco_['tracks']['seedId'].value_counts()
-    print("음악 간 표준편차 - {}".format(round(_count.std())))
 
     matplotlib.rc('font', family='AppleGothic')
     plt.rcParams['axes.unicode_minus'] = False

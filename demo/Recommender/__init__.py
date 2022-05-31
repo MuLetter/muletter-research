@@ -6,7 +6,7 @@ from .run import run
 from .draw_dataset import draw_dataset
 from .draw_cluster import draw_cluster
 from .parse_reco_cluster import parse_reco_cluster
-from .adjust_rate import adjust_rate
+from .adjust_rate import adjust_rate, min_adjust_rate, max_adjust_rate
 from .draw_rate import draw_rate
 from .draw_filtering import draw_filtering
 
@@ -58,5 +58,7 @@ Recommender.draw_cluster = draw_cluster
 Recommender.run = run
 Recommender.parse_reco_cluster = parse_reco_cluster
 Recommender.adjust_rate = adjust_rate
+Recommender.min_adjust_rate = min_adjust_rate
+Recommender.max_adjust_rate = max_adjust_rate
 Recommender.draw_rate = draw_rate
 Recommender.draw_filtering = draw_filtering
