@@ -25,8 +25,8 @@ def draw_radar_map():
     fig = plt.figure(figsize=(32, 16))
 
     mailbox_cnt = 0
-    for idx, left_idx in enumerate(range(1, 16, 6)):
-        for _idx, radar_idx in enumerate(range(left_idx, left_idx + 3)):
+    for left_idx in range(1, 16, 6):
+        for radar_idx in range(left_idx, left_idx + 3):
             if radar_idx == 15:
                 ax = plt.subplot(3, 6, radar_idx)
                 ax.text(0.5, 0.5, "+{}".format(len(mailboxes) - len(ran_mailboxes)),
@@ -56,8 +56,7 @@ def draw_radar_map():
                                           ran_mailboxes[mailbox_cnt]['_labelPercentages'][0]), color="#AC73CF")
                 mailbox_cnt += 1
 
-            ax.set_ylim(-100, 100)
-            ax.set_xlim(-100, 100)
+                ax.set_ylim(0, 100)
 
     gs = fig.add_gridspec(3, 6)
     ax = fig.add_subplot(gs[:, 3:6])
@@ -67,8 +66,8 @@ def draw_radar_map():
 
     ax.scatter(points[:, 0], points[:, 1], color='#AC73CF', s=500, marker='v')
 
-    plt.ylim(-100, 100)
-    plt.xlim(-100, 100)
+    ax.set_ylim(-100, 100)
+    ax.set_xlim(-100, 100)
 
     ax.spines['right'].set_visible(False)
     ax.spines['left'].set_visible(False)

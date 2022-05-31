@@ -54,7 +54,7 @@ class Demo1:
         display(
             Markdown(
                 "### 현재 Seed음악들의 추천음악 수량 표준편차는 <u>{}</u> 입니다.".format(
-                    _count.std().round().astype("int"))
+                    round(_count.std()))
             )
         )
 
