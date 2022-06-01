@@ -114,8 +114,8 @@ class Demo1:
             "### Rate Adjusting"))
         display(
             Markdown("**추천음악 수량이 <u>{}개</u>에서 <u>{}개</u>로 조정되었습니다.**".format(
-                recommender.mailbox_id,
-                recommender.reco_['tracks']['trackId'].size))
+                round(prev_count.sum()),
+                round(next_count.sum())))
         )
         display(
             Markdown("<b>추천음악 수량 표준편차 변화 : <u>{} → {}</u></b>".format(

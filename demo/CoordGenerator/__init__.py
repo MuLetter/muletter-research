@@ -106,10 +106,11 @@ def _make_coords(mailbox):
                 "_labelPercentages": label_percentages_.tolist()
             }
         })
-    except:
-        print(track)
 
-    return label_percentages_, point
+        return label_percentages_, point
+    except:
+        print(label_percentages_)
+        print(track)
 
 
 class CoordGenerator:

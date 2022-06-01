@@ -19,6 +19,7 @@ class Demo2:
 
         observer.run()
         observer.sorting()
+        observer.save()
         Demo2._clear()
 
         CoordGenerator.all_make_coords()
