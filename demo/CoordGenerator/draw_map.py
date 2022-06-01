@@ -12,7 +12,7 @@ def draw_map():
     matplotlib.rc('font', family='AppleGothic')
     plt.rcParams['axes.unicode_minus'] = False
 
-    mailbox_docs = db.mailbox.find({})
+    mailbox_docs = db.mailbox.find({"point": {"$exists": True}})
     points = np.array([[_['point']['x'], _['point']['y']]
                       for _ in mailbox_docs])
 

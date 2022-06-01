@@ -1,4 +1,7 @@
 from IPython.display import display, Markdown, clear_output
+from ..SeedZoneObserver import SeedZoneObserver
+from ..CoordGenerator import CoordGenerator
+from ..lib import DB
 
 
 class Demo2:
@@ -7,16 +10,34 @@ class Demo2:
         clear_output(wait=True)
 
     @staticmethod
-    def so_pt1(observer):
-        display(
-            Markdown("### 현재 SeedZone에는 <u>{}개의 Seed음악</u>들이 있습니다.".format(
-                len(observer.features_df)
-            ))
-        )
+    def pt1():
+        CoordGenerator.draw_map()
 
     @staticmethod
-    def so_pt3(observer):
+    def pt2():
+        observer = SeedZoneObserver()
+
+        observer.run()
+        observer.sorting()
+        Demo2._clear()
+
+        CoordGenerator.all_make_coords()
+
         display(
-            Markdown(
-                "### 새로운 SeedZone 클러스터링 정보 <u>{}</u>가 등록 되었습니다.".format(str(observer.cluster_zone)))
+            Markdown("### 우체통 지도가 완성되었습니다.")
         )
+        CoordGenerator.draw_map()
+
+        display(
+            Markdown("### 아래의 SeedZone Clustering 결과를 토대로 만들어졌어요.")
+        )
+        observer.kmeans.draw_cluster()
+        CoordGenerator.draw_radar_map()
+
+    @staticmethod
+    def pt3():
+        ran_mailbox = DB().random_mailbox()
+        gen = CoordGenerator(str(ran_mailbox['_id']))
+
+        gen.make_coords()
+        gen.radar_test()

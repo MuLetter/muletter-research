@@ -40,7 +40,7 @@ def radar_test(self):
         ax.axhline(0, color="#999", lw=0.5)
         ax.scatter(target[:, 0], target[:, 1], color="#AC73CF", s=50)
         ax.scatter(target_points[:, 0], target_points[:,
-                   1], color="#EE68A4", s=50, marker="v")
+                   1], color="#EE68A4", s=200, marker="v")
         ax.set_title(title[idx])
         ax.set_xlim(map_size[0], map_size[1])
         ax.set_ylim(map_size[0], map_size[1])

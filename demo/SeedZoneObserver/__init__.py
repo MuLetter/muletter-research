@@ -8,6 +8,7 @@ from ..common import FEATURE_COLS
 class SeedZoneObserver:
     def __init__(self):
         self.db = DB()
+        self.init_setting()
 
     def init_setting(self):
         # Data Ready
