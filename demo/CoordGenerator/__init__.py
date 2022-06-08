@@ -37,7 +37,7 @@ def check_guadrant(angle, point):
         return [point[1] * -1, 0]
 
 
-def get_coord(data):
+def get_coord(data, detail=False):
     K = len(data)
     angles = np.array([x/float(K)*(2*mt.pi) for x in range(K)])
     non_zero_labels = data != 0
@@ -70,7 +70,10 @@ def get_coord(data):
 
             point[idx] = [x, y]
 
-    return point.sum(axis=0)
+    if detail:
+        return point, point.sum(axis=0)
+    else:
+        return point.sum(axis=0)
 
 
 def _make_coords(mailbox):
