@@ -26,6 +26,7 @@ class QA:
         plt.rcParams['axes.unicode_minus'] = False
 
         lp = np.array(gen.mailbox['_labelPercentages'])
+        print(lp)
         plt.figure(figsize=(8, 8))
 
         plt.pie(lp, autopct='%.1f%%', labels=[
