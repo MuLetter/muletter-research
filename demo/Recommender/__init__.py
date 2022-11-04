@@ -4,7 +4,7 @@ from .merge import merge
 from .data_preprocessing import data_preprocessing
 from .run import run
 from .draw_dataset import draw_dataset
-from .draw_cluster import draw_cluster
+from .draw_cluster import draw_cluster, save_draw_cluster
 from .parse_reco_cluster import parse_reco_cluster
 from .adjust_rate import adjust_rate, min_adjust_rate, max_adjust_rate
 from .draw_rate import draw_rate
@@ -55,6 +55,7 @@ Recommender.merge = merge
 Recommender.data_preprocessing = data_preprocessing
 Recommender.draw_dataset = draw_dataset
 Recommender.draw_cluster = draw_cluster
+Recommender.save_draw_cluster = save_draw_cluster
 Recommender.run = run
 Recommender.parse_reco_cluster = parse_reco_cluster
 Recommender.adjust_rate = adjust_rate

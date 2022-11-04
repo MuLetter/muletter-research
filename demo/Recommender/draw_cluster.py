@@ -45,3 +45,55 @@ def draw_cluster(self):
         plt.xlabel("Feature")
 
     plt.show()
+
+
+def save_draw_cluster(self):
+    matplotlib.rc('font', family='AppleGothic')
+    plt.rcParams['axes.unicode_minus'] = False
+
+    kmeans = self.kmeans
+    features = self.features['norm']
+    cols = self.user['features'].columns.values[1:]
+
+    r, c = mt.ceil(kmeans.K / 4), 4
+    plt.figure(figsize=(38, 8 * mt.ceil(kmeans.K / 4)))
+
+    for label in np.unique(kmeans.labels_):
+        if hasattr(self, "parsed_labels_"):
+            if np.isin(label, self.parsed_labels_):
+                feature_color = "#EE68A4"
+                features_lw = 1.25
+                cluster_color = "#EE68A4"
+                cluster_lw = 1.25
+            else:
+                feature_color = "white"
+                features_lw = 0
+                cluster_color = "white"
+                cluster_lw = 0
+        else:
+            feature_color = "#2880D8"
+            features_lw = 0.25
+            cluster_color = "#EE68A4"
+            cluster_lw = 3
+        _features = features[kmeans.labels_ == label]
+        _cluster = kmeans.clusters_[label]
+
+        ax = plt.subplot(r, 4, label + 1)
+        ax.spines['bottom'].set_color('white')
+        ax.spines['top'].set_color('white')
+        ax.spines['right'].set_color('white')
+        ax.spines['left'].set_color('white')
+        ax.plot(cols, _features.T, color="white",
+                linewidth=features_lw)
+        ax.plot(cols, _cluster, color="white",
+                linewidth=cluster_lw)
+
+        ax.xaxis.label.set_color('white')
+        ax.tick_params(axis='x', colors='white')
+        ax.yaxis.label.set_color('white')
+        ax.tick_params(axis='y', colors='white')
+
+        plt.ylabel("Value")
+        plt.xlabel("Feature")
+
+    plt.savefig("./visual_images/cluster_parsed.png", transparent=True)
