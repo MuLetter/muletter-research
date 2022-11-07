@@ -35,3 +35,37 @@ def draw_map():
     ax.yaxis.label.set_color('#666')
 
     plt.show()
+
+
+@staticmethod
+def save_draw_map():
+    db = DB()
+    map_size = -100, 100
+    matplotlib.rc('font', family='AppleGothic')
+    plt.rcParams['axes.unicode_minus'] = False
+
+    mailbox_docs = db.mailbox.find({"point": {"$exists": True}})
+    points = np.array([[_['point']['x'], _['point']['y']]
+                      for _ in mailbox_docs])
+
+    plt.figure(figsize=(16, 12))
+    ax = plt.subplot(1, 1, 1)
+
+    ax.axvline(0, color='#fff', lw=0.5)
+    ax.axhline(0, color='#fff', lw=0.5)
+    ax.scatter(points[:, 0], points[:, 1], s=300, color='#fff')
+
+    plt.ylim(map_size[0], map_size[1])
+    plt.xlim(map_size[0], map_size[1])
+
+    ax.spines['right'].set_visible(False)
+    ax.spines['left'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+    ax.spines['bottom'].set_visible(False)
+
+    ax.xaxis.label.set_color('white')
+    ax.tick_params(axis='x', colors='white')
+    ax.yaxis.label.set_color('white')
+    ax.tick_params(axis='y', colors='white')
+
+    plt.savefig("./visual_images/draw_map.png", transparent=True)
