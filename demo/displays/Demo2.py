@@ -35,6 +35,8 @@ class Demo2:
         observer.kmeans.draw_cluster()
         CoordGenerator.draw_radar_map()
 
+        return observer
+
     @staticmethod
     def pt3():
         ran_mailbox = DB().random_mailbox()
