@@ -23,8 +23,15 @@ def radar_test(self):
 
     _in_idx = _euc.argsort()[:5]
     _out_idx = _euc.argsort()[-5:]
+    print(_out_idx)
+
     in_points = points[_in_idx]
     out_points = points[_out_idx]
+    print(in_points)
+    print(out_points)
+
+    print(self.mailbox_id)
+
     print(ids[_in_idx])
     print(ids[_out_idx])
 
