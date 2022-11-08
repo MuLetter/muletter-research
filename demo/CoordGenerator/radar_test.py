@@ -17,6 +17,7 @@ def radar_test(self):
     points = np.array([[_['point']['x'], _['point']['y']] for _ in mailboxes])
     target_points = np.array(
         [[target_mailbox['point']['x'], target_mailbox['point']['y']]])
+    ids = np.array([_['_id'] for _ in mailboxes])
 
     _euc = euc(target_points, points)[0]
 
@@ -24,6 +25,8 @@ def radar_test(self):
     _out_idx = _euc.argsort()[-5:]
     in_points = points[_in_idx]
     out_points = points[_out_idx]
+    print(ids[_in_idx])
+    print(ids[_out_idx])
 
     fig = plt.figure(figsize=(16, 14))
 
