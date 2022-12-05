@@ -43,3 +43,5 @@ def draw_filtering(self):
         plt.legend(loc='upper right')
 
     plt.show()
+
+    return features[~user_idx], features[user_idx]
